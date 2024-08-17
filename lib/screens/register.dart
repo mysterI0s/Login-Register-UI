@@ -124,6 +124,7 @@ class Register extends StatelessWidget {
                                             bottom: BorderSide(
                                                 color: Colors.grey.shade200))),
                                     child: const TextField(
+                                      keyboardType: TextInputType.number,
                                       decoration: InputDecoration(
                                           hintText: "Phone number",
                                           hintStyle:
@@ -139,6 +140,7 @@ class Register extends StatelessWidget {
                                             bottom: BorderSide(
                                                 color: Colors.grey.shade200))),
                                     child: const TextField(
+                                      obscureText: true,
                                       decoration: InputDecoration(
                                           hintText: "Password",
                                           hintStyle:
@@ -154,6 +156,7 @@ class Register extends StatelessWidget {
                                             bottom: BorderSide(
                                                 color: Colors.grey.shade200))),
                                     child: const TextField(
+                                      obscureText: true,
                                       decoration: InputDecoration(
                                           hintText: "Validate Your Password",
                                           hintStyle:

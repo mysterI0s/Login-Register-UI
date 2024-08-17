@@ -88,6 +88,7 @@ class Login extends StatelessWidget {
                                             bottom: BorderSide(
                                                 color: Colors.grey.shade200))),
                                     child: const TextField(
+                                      keyboardType: TextInputType.number,
                                       decoration: InputDecoration(
                                           hintText: "Phone number",
                                           hintStyle:
