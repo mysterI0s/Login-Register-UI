@@ -1,5 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:login_page/constants/colors.dart';
 
 void main() => runApp(const MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -15,11 +16,9 @@ class Register extends StatelessWidget {
       body: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-            gradient: LinearGradient(begin: Alignment.topCenter, colors: [
-          Colors.orange.shade900,
-          Colors.orange.shade800,
-          Colors.orange.shade400
-        ])),
+            gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                colors: [orange900, orange800, orange400])),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -177,7 +176,7 @@ class Register extends StatelessWidget {
                               onPressed: () {},
                               height: 50,
                               // margin: EdgeInsets.symmetric(horizontal: 50),
-                              color: Colors.orange[900],
+                              color: orange900,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50),
                               ),
