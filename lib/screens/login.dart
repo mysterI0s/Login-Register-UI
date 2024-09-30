@@ -2,14 +2,50 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import '../screens/register.dart';
 import 'package:login_page/constants/colors.dart';
+import "package:http/http.dart" as http;
+import "welcome.dart";
 
 void main() => runApp(const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Login(),
     ));
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
   const Login({super.key});
+
+  @override
+  State<Login> createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  Future<void> _login(BuildContext context) async {
+    String url = "YOUR_LOGIN_API_ENDPOINT";
+    var response = await http.post(Uri.parse(url), body: {
+      'email': _phoneController.text,
+      'password': _passwordController.text,
+    });
+
+    if (response.statusCode == 200) {
+      // Login successful, navigate to Welcome screen
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const WelcomeScreen()),
+      );
+    } else if (response.statusCode == 401) {
+      // Unauthorized - Incorrect credentials
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Incorrect email or password. Please try again.'),
+      ));
+    } else {
+      // Handle other error cases
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('An error occurred. Please try again later.'),
+      ));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,9 +122,10 @@ class Login extends StatelessWidget {
                                         border: Border(
                                             bottom: BorderSide(
                                                 color: Colors.grey.shade200))),
-                                    child: const TextField(
+                                    child: TextField(
+                                      controller: _phoneController,
                                       keyboardType: TextInputType.number,
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                           hintText: "Phone number",
                                           hintStyle:
                                               TextStyle(color: Colors.grey),
@@ -102,9 +139,10 @@ class Login extends StatelessWidget {
                                         border: Border(
                                             bottom: BorderSide(
                                                 color: Colors.grey.shade200))),
-                                    child: const TextField(
+                                    child: TextField(
                                       obscureText: true,
-                                      decoration: InputDecoration(
+                                      controller: _passwordController,
+                                      decoration: const InputDecoration(
                                           hintText: "Password",
                                           hintStyle:
                                               TextStyle(color: Colors.grey),

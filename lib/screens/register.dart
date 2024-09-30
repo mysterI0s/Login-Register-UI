@@ -1,14 +1,50 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:login_page/constants/colors.dart';
+import 'package:http/http.dart' as http;
+import "welcome.dart";
 
 void main() => runApp(const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Register(),
     ));
 
-class Register extends StatelessWidget {
+class Register extends StatefulWidget {
   const Register({super.key});
+
+  @override
+  State<Register> createState() => _RegisterState();
+}
+
+class _RegisterState extends State<Register> {
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  Future<void> _register(BuildContext context) async {
+    String url = "YOUR_REGISTER_API_ENDPOINT";
+    var response = await http.post(Uri.parse(url), body: {
+      'email': _phoneController.text,
+      'password': _passwordController.text,
+    });
+
+    if (response.statusCode == 201) {
+      // Registration successful, navigate to Welcome screen
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const WelcomeScreen()),
+      );
+    } else if (response.statusCode == 400) {
+      // Bad request - Invalid input
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Invalid email or password format. Please try again.'),
+      ));
+    } else {
+      // Handle other error cases
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('An error occurred. Please try again later.'),
+      ));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -122,9 +158,10 @@ class Register extends StatelessWidget {
                                         border: Border(
                                             bottom: BorderSide(
                                                 color: Colors.grey.shade200))),
-                                    child: const TextField(
+                                    child: TextField(
                                       keyboardType: TextInputType.number,
-                                      decoration: InputDecoration(
+                                      controller: _phoneController,
+                                      decoration: const InputDecoration(
                                           hintText: "Phone number",
                                           hintStyle:
                                               TextStyle(color: Colors.grey),
@@ -138,9 +175,10 @@ class Register extends StatelessWidget {
                                         border: Border(
                                             bottom: BorderSide(
                                                 color: Colors.grey.shade200))),
-                                    child: const TextField(
+                                    child: TextField(
                                       obscureText: true,
-                                      decoration: InputDecoration(
+                                      controller: _passwordController,
+                                      decoration: const InputDecoration(
                                           hintText: "Password",
                                           hintStyle:
                                               TextStyle(color: Colors.grey),
